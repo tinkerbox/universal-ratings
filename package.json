@@ -10,6 +10,7 @@
   "author": "Jaryl Sim",
   "license": "ISC",
   "dependencies": {
+    "@vercel/node": "^1.8.1",
     "@zilliqa-js/zilliqa": "^1.0.0",
     "dotenv": "^8.2.0"
   }
