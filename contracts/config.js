@@ -1,10 +1,9 @@
 require('dotenv').config();
-const { units } = require('@zilliqa-js/util');
 
 module.exports = {
   contracts: [
     {
-      name: 'GoFundMi',
+      name: 'RatingsNode',
       init: [
         {
           vname: 'owner',
@@ -29,8 +28,7 @@ module.exports = {
           name: 'UpdateOrCreateRatings',
           params: [
             { vname: 'target', type: 'String' },
-            { vname: 'ratingType', type: 'String' },
-            { vname: 'ratingValue', type: 'String' },
+            { vname: 'payload', type: 'List Rating' },
           ],
         },
       ],

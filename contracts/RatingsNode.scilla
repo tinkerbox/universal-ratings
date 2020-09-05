@@ -33,7 +33,7 @@ let removeNode =
 
 contract RatingsNode (owner : ByStr20)
 
-field ratings : Map String Rating = Emp String Rating
+field ratings : Map String (List Rating) = Emp String (List Rating)
 field nodes : List ByStr20 = Nil {ByStr20}
 
 procedure CheckIsOwner ()
@@ -76,12 +76,11 @@ transition RemoveNode (address : ByStr20)
   event e
 end
 
-transition UpdateOrCreateRatings (target : String, ratingType : String, ratingValue : String)
+transition UpdateOrCreateRatings (target : String, payload : List Rating)
   CheckIsOwner;
 
-  rating = Rating ratingType ratingValue;
-  ratings[target] := rating;
+  ratings[target] := payload;
 
-  e = { _eventname : "Rating"; target : target; ratingType : ratingType; ratingValue : ratingValue };
+  e = { _eventname : "Ratings set"; target : target };
   event e
 end
