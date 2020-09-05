@@ -1,0 +1,87 @@
+scilla_version 0
+
+import BoolUtils ListUtils
+
+library RatingsNode
+
+type Rating =
+| Rating of String String
+
+type Node =
+| Node of String String
+
+let check_node_present =
+  fun (address : ByStr20) =>
+  fun (nodes : List ByStr20) =>
+    let f =
+      fun (a: ByStr20) =>
+        builtin eq a address
+    in
+    let list_exists_bystr20 = @list_exists ByStr20 in
+    list_exists_bystr20 f nodes
+
+let removeNode =
+  fun (address : ByStr20) =>
+  fun (nodes : List ByStr20) =>
+    let f =
+      fun (a: ByStr20) =>
+        let value = builtin eq a address in
+        negb value
+    in
+    let list_filter_bystr20 = @list_filter ByStr20 in
+    list_filter_bystr20 f nodes
+
+contract RatingsNode (owner : ByStr20)
+
+field ratings : Map String Rating = Emp String Rating
+field nodes : List ByStr20 = Nil {ByStr20}
+
+procedure CheckIsOwner ()
+  isOwner = builtin eq owner _sender;
+  match isOwner with
+  | True =>
+    (* no-op*)
+  | False =>
+    e = { _exception : "Sender is not the owner" };
+    throw e
+  end
+end
+
+transition AddNode (address : ByStr20)
+  CheckIsOwner;
+
+  existing <- nodes;
+  node_already_added = check_node_present address existing;
+
+  match node_already_added with
+    | True =>
+      (* no-op*)
+    | False =>
+      newList = Cons {ByStr20} address existing;
+      nodes := newList;
+
+      e = { _eventname : "Node added"; address : address };
+      event e
+  end
+end
+
+transition RemoveNode (address : ByStr20)
+  CheckIsOwner;
+
+  existing <- nodes;
+  newList = removeNode address existing;
+  nodes := newList;
+
+  e = { _eventname : "Node removed"; address : address };
+  event e
+end
+
+transition UpdateOrCreateRatings (target : String, ratingType : String, ratingValue : String)
+  CheckIsOwner;
+
+  rating = Rating ratingType ratingValue;
+  ratings[target] := rating;
+
+  e = { _eventname : "Rating"; target : target; ratingType : ratingType; ratingValue : ratingValue };
+  event e
+end
