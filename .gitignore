@@ -115,5 +115,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Environment specific ignore(s)
+.DS_Store
+
 # Application specific ignore(s)
 .dev
+public/build/
