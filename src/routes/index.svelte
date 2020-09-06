@@ -1,9 +1,10 @@
 <script>
-	import 'bulma/css/bulma.css';
+  import 'bulma/css/bulma.css';
 </script>
 
-<style>
-</style>
+<svelte:head>
+	<title>Universal Ratings</title>
+</svelte:head>
 
 <main>
 	<section class="hero is-success is-fullheight">
@@ -13,7 +14,7 @@
 					Universal Ratings
 				</h1>
 				<h2 class="subtitle">
-					Universal system for federated content rating
+					Universal system for federated content rating.
 				</h2>
 			</div>
 		</div>
