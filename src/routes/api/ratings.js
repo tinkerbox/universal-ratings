@@ -1,3 +1,3 @@
 export default (req, res) => {
-  res.json({ name: 'John', email: 'john@example.com' });
+  res.json({ name: 'John (api)', email: 'john@example.com' });
 };
